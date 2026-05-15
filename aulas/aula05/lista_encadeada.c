@@ -19,7 +19,6 @@ ListaEncadeada *criar()
 void destruir(ListaEncadeada *lista) 
 {
     free(lista); 
-
 }
 
 int lista_vazia(ListaEncadeada *lista) {
@@ -38,7 +37,6 @@ void adicionar_final(ListaEncadeada *lista, int valor)
 
     if (lista_vazia(lista)) {
         lista->primeiro = no;
-        lista->ultimo = no;
     } else {
         lista->ultimo->proximo = no;
     }
@@ -65,4 +63,36 @@ No *buscar(ListaEncadeada *lista, int valor)
 
 void remover(ListaEncadeada *lista, int valor)
 {
+    if (lista_vazia(lista)){
+        return;
+    }
+
+    // remover o primeiro
+    No *no = lista->primeiro;
+    if (no->dado == valor) {
+        lista->primeiro = no->proximo;
+        lista->quantidade--;
+        free(no);
+        return;
+    }
+
+    // remover o do meio
+    No *anterior = no;
+    while (no->proximo != NULL) {
+        anterior = no;
+        no = no->proximo;
+        if (no->dado == valor) {
+            anterior->proximo = no->proximo;
+            lista->quantidade--;
+            break;
+        }
+    }
+
+    // remove o ultimo
+    if (no->proximo == NULL && no->dado == valor) {
+        lista->ultimo = anterior;
+    }
+
+    free(no);
+
 }
